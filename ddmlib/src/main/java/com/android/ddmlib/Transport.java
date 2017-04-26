@@ -15,7 +15,6 @@ import java.util.concurrent.TimeUnit;
 import com.android.ddmlib.AdbHelper.AdbResponse;
 
 public class Transport implements Runnable {
-
 	private SocketChannel adbChan;
 
 	private IDevice device;
@@ -73,10 +72,11 @@ public class Transport implements Runnable {
 			throw new AdbCommandRejectedException(resp.message);
 		}
 	}
-	public static final String TAG="Transport";
+
+	public static final String TAG = "Transport";
 
 	private void closeKey(SelectionKey key) {
-		Log.d(TAG,"CloseKey");
+		Log.d(TAG, "CloseKey");
 		if (key != null) {
 			key.cancel();
 			try {
@@ -124,6 +124,9 @@ public class Transport implements Runnable {
 				Iterator<SelectionKey> iterator = keys.iterator();
 				while (iterator.hasNext()) {
 					key = iterator.next();
+					if (rciv == null || rciv.isCancelled()) {
+						break;
+					}
 					SocketChannel socketchannel = (SocketChannel) key.channel();
 					if (key.isConnectable()) {
 						if (socketchannel.isConnectionPending()) {
@@ -138,6 +141,7 @@ public class Transport implements Runnable {
 							int count = socketchannel.read(buffer);
 							if (count == -1) {
 								closeKey(key);
+								break;
 							}
 							rciv.addOutput(buffer.array(), buffer.arrayOffset(), buffer.position());
 						} catch (Exception e) {
@@ -148,9 +152,11 @@ public class Transport implements Runnable {
 					iterator.remove();
 				}
 			}
+			Log.d(TAG, device + " transport end...");
 		} catch (Exception e) {
 			e.printStackTrace();
 			closeKey(key);
 		}
 	}
+
 }
