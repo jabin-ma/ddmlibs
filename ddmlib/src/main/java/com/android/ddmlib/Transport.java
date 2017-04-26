@@ -73,8 +73,10 @@ public class Transport implements Runnable {
 			throw new AdbCommandRejectedException(resp.message);
 		}
 	}
+	public static final String TAG="Transport";
 
 	private void closeKey(SelectionKey key) {
+		Log.d(TAG,"CloseKey");
 		if (key != null) {
 			key.cancel();
 			try {
@@ -88,6 +90,7 @@ public class Transport implements Runnable {
 
 	public void close() {
 		try {
+			executorService.shutdownNow();
 			if (adbChan != null) {
 				adbChan.socket().close();
 				adbChan.close();
