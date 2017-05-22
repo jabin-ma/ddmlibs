@@ -354,6 +354,10 @@ public final class Log {
         return String.format("%s %c/%s: %s\n", formatter.format(new Date()),
                 logLevel.getPriorityLetter(), tag, message);
     }
+
+	public static void w(String string, String message, RuntimeException e) {
+		
+	}
 }
 
 

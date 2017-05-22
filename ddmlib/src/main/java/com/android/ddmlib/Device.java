@@ -472,7 +472,7 @@ final class Device implements IDevice {
 
     @Override
     public String toString() {
-        return mSerialNumber;
+        return mSerialNumber+"-"+mState;
     }
 
     /*
@@ -1291,5 +1291,11 @@ final class Device implements IDevice {
     @Override
     public String getRegion() {
         return getProperty(IDevice.PROP_DEVICE_REGION);
+    }
+    
+    
+    @Override
+	public NetworkMonkey getMonkey() throws IOException{
+    	return NetworkMonkey.create(this);
     }
 }

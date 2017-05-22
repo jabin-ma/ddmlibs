@@ -86,7 +86,7 @@ final class AdbHelper {
 
 		SocketChannel adbChan = SocketChannel.open(adbSockAddr);
 		try {
-			//TODO 没有修改为createAdbSocket(adbSockAddr);
+			// TODO 没有修改为createAdbSocket(adbSockAddr);
 			adbChan.socket().setTcpNoDelay(true);
 			adbChan.configureBlocking(false);
 
@@ -221,8 +221,7 @@ final class AdbHelper {
 		assert result.length == req.length() + 4;
 		return result;
 	}
-	
-	
+
 	public static byte[] formTransportRequest(String req) {
 		byte[] result;
 		try {
@@ -234,7 +233,7 @@ final class AdbHelper {
 		assert result.length == req.length() + 4;
 		return result;
 	}
-	
+
 	/**
 	 * Reads the response from ADB after a command.
 	 * 
@@ -256,7 +255,6 @@ final class AdbHelper {
 
 		byte[] reply = new byte[4];
 		read(chan, reply);
-
 		if (isOkay(reply)) {
 			resp.okay = true;
 		} else {
@@ -512,7 +510,6 @@ final class AdbHelper {
 
 			byte[] request = formAdbRequest(adbService.name().toLowerCase() + ":" + command); //$NON-NLS-1$
 			write(adbChan, request);
-
 			AdbResponse resp = readAdbResponse(adbChan, false /* readDiagString */);
 			if (!resp.okay) {
 				Log.e("ddms", "ADB rejected shell command (" + command + "): " + resp.message);
@@ -549,7 +546,8 @@ final class AdbHelper {
 				count = adbChan.read(buf);
 				if (count < 0) {
 					// we're at the end, we flush the output
-					rcvr.flush();
+					if (rcvr != null)
+						rcvr.flush();
 					Log.v("ddms", "execute '" + command + "' on '" + device + "' : EOF hit. Read: " + count);
 					break;
 				} else if (count == 0) {
@@ -586,12 +584,10 @@ final class AdbHelper {
 		adbChan.configureBlocking(false);
 		return adbChan;
 	}
-	
-	
-//	static SocketChannel createAdbSocket() throws IOException{
-//		return createAdbSocket(AndroidDebugBridge.getSocketAddress());
-//	}
-	
+
+	// static SocketChannel createAdbSocket() throws IOException{
+	// return createAdbSocket(AndroidDebugBridge.getSocketAddress());
+	// }
 
 	/**
 	 * Runs the Event log service on the {@link Device}, and provides its output
@@ -849,7 +845,6 @@ final class AdbHelper {
 
 		while (buf.position() != buf.limit()) {
 			int count;
-
 			count = chan.read(buf);
 			if (count < 0) {
 				Log.d("ddms", "read: channel EOF");
@@ -991,7 +986,7 @@ final class AdbHelper {
 
 		SocketChannel adbChan = null;
 		try {
-			adbChan =createAdbSocket(adbSockAddr);
+			adbChan = createAdbSocket(adbSockAddr);
 
 			// if the device is not -1, then we first tell adb we're looking to
 			// talk

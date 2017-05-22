@@ -30,6 +30,10 @@ import java.util.ArrayList;
 public abstract class MultiLineReceiver implements IShellOutputReceiver {
 
     private boolean mTrimLines = true;
+    
+    
+    private boolean reportOneLine=false;
+    
 
     /** unfinished message line, stored for next packet */
     private String mUnfinishedLine = null;
@@ -44,6 +48,7 @@ public abstract class MultiLineReceiver implements IShellOutputReceiver {
         mTrimLines = trim;
     }
 
+    
     /* (non-Javadoc)
      * @see com.android.ddmlib.adb.IShellOutputReceiver#addOutput(
      *      byte[], int, int)
@@ -85,13 +90,16 @@ public abstract class MultiLineReceiver implements IShellOutputReceiver {
                 if (mTrimLines) {
                     line = line.trim();
                 }
-                mArray.add(line);
-
+                if(reportOneLine){
+                	processNewLines(line);
+                }else{
+                	mArray.add(line);
+                }
                 // move start to after the \r\n we found
                 start = index + newlineLength;
             } while (true);
 
-            if (!mArray.isEmpty()) {
+            if (!mArray.isEmpty()&&!reportOneLine) {
                 // at this point we've split all the lines.
                 // make the array
                 String[] lines = mArray.toArray(new String[mArray.size()]);
@@ -127,5 +135,10 @@ public abstract class MultiLineReceiver implements IShellOutputReceiver {
      * <p/>It is guaranteed that the lines are complete when they are given to this method.
      * @param lines The array containing the new lines.
      */
-    public abstract void processNewLines(String[] lines);
+    public abstract void processNewLines(String... lines);
+
+
+	public void setReportOneLine(boolean reportOneLine) {
+		this.reportOneLine = reportOneLine;
+	}
 }
