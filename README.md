@@ -1,2 +1,2 @@
 # ddmlibs
-copy from aosp 
+forked from aosp
