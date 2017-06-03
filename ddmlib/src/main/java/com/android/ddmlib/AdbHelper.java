@@ -16,10 +16,6 @@
 
 package com.android.ddmlib;
 
-import com.android.annotations.Nullable;
-import com.android.ddmlib.log.LogReceiver;
-
-import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.UnsupportedEncodingException;
@@ -28,6 +24,9 @@ import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
 import java.nio.channels.SocketChannel;
 import java.util.concurrent.TimeUnit;
+
+import com.android.annotations.Nullable;
+import com.android.ddmlib.log.LogReceiver;
 
 /**
  * Helper class to handle requests and connections to adb.
@@ -38,7 +37,7 @@ import java.util.concurrent.TimeUnit;
  * This currently uses spin-wait non-blocking I/O. A Selector would be more
  * efficient, but seems like overkill for what we're doing here.
  */
-final class AdbHelper {
+public final class AdbHelper {
 
 	// public static final long kOkay = 0x59414b4fL;
 	// public static final long kFail = 0x4c494146L;
@@ -882,7 +881,7 @@ final class AdbHelper {
 	 * @throws IOException
 	 *             in case of I/O error on the connection.
 	 */
-	static void write(SocketChannel chan, byte[] data) throws TimeoutException, IOException {
+	public static void write(SocketChannel chan, byte[] data) throws TimeoutException, IOException {
 		write(chan, data, -1, DdmPreferences.getTimeOut());
 	}
 

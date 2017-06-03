@@ -1,4 +1,4 @@
-package com.android.ddmlib;
+package com.android.ddmlib.monkey;
 
 import java.io.IOException;
 import java.net.InetSocketAddress;
@@ -15,6 +15,13 @@ import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
+
+import com.android.ddmlib.AdbCommandRejectedException;
+import com.android.ddmlib.AdbHelper;
+import com.android.ddmlib.IDevice;
+import com.android.ddmlib.Log;
+import com.android.ddmlib.ShellCommandUnresponsiveException;
+import com.android.ddmlib.TimeoutException;
 
 public class NetworkMonkey implements Callable<Void> {
 
@@ -40,7 +47,7 @@ public class NetworkMonkey implements Callable<Void> {
 
 	private ExecutorService executorService = Executors.newSingleThreadExecutor();
 
-	IDevice mDev;
+	private IDevice mDev;
 
 	public NetworkMonkey(IDevice dev) throws IOException {
 		mDev = dev;

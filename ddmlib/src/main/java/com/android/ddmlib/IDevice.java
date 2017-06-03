@@ -16,16 +16,17 @@
 
 package com.android.ddmlib;
 
-import com.android.annotations.NonNull;
-import com.android.annotations.Nullable;
-import com.android.ddmlib.log.LogReceiver;
-
 import java.io.IOException;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Future;
 import java.util.concurrent.TimeUnit;
+
+import com.android.annotations.NonNull;
+import com.android.annotations.Nullable;
+import com.android.ddmlib.log.LogReceiver;
+import com.android.ddmlib.monkey.NetworkMonkey;
 
 /**
  *  A Device. It can be a physical device or an emulator.
